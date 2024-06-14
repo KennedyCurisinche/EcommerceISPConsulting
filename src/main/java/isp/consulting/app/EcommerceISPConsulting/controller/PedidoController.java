@@ -20,8 +20,9 @@ public class PedidoController {
 
     @PostMapping("/realizar-pedido")
     public ResponseEntity<MensajeResponse> realizarPedido(@RequestBody PedidoRequest request) {
-        Boolean repsuesta = pedidoService.save(request);
-        if (repsuesta) {
+
+        Boolean respuesta = pedidoService.save(request);
+        if (respuesta) {
             return new ResponseEntity<MensajeResponse>(new MensajeResponse(true, "Pedido realizado"), HttpStatus.OK);
         } else {
             return new ResponseEntity<MensajeResponse>(new MensajeResponse(true, "No se pudo realizar pedido"), HttpStatus.OK);

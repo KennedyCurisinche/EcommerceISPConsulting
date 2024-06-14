@@ -2,10 +2,10 @@ package isp.consulting.app.EcommerceISPConsulting.service.impl;
 
 import isp.consulting.app.EcommerceISPConsulting.dto.PedidoRequest;
 import isp.consulting.app.EcommerceISPConsulting.model.Cliente;
-import isp.consulting.app.EcommerceISPConsulting.model.Direccion;
 import isp.consulting.app.EcommerceISPConsulting.model.Pedido;
 import isp.consulting.app.EcommerceISPConsulting.model.Producto;
 import isp.consulting.app.EcommerceISPConsulting.model.ProductoPedido;
+import isp.consulting.app.EcommerceISPConsulting.repository.ClienteRepository;
 import isp.consulting.app.EcommerceISPConsulting.repository.PedidoRepository;
 import isp.consulting.app.EcommerceISPConsulting.repository.ProductoPedidoRepository;
 import isp.consulting.app.EcommerceISPConsulting.service.PedidoService;
@@ -22,45 +22,40 @@ public class PedidoServiceimpl implements PedidoService {
     @Autowired
     private ProductoPedidoRepository productoPedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     @Override
     public Boolean save(PedidoRequest request) {
 
         if (request != null) {
 
+            Cliente cliente = clienteRepository.findById(request.getIdcliente()).orElse(null);
+
             Pedido pedido = pedidoRepository.save(
                     Pedido.builder()
                             .fechaPedido(ClockPE.getClockLima())
                             .totalPedido(request.getTotal())
-                            .cliente(
-                                    Cliente.builder()
-                                            .nombreCliente(request.getCliente())
-                                            .direccion(
-                                                    Direccion.builder()
-                                                            .completaDireccion(request.getDireccion())
-                                                            .build()
-                                            )
-                                            .build()
-                            )
+                            .cliente(cliente)
                             .build()
             );
 
-            request.getProductos().forEach(p -> {
-                        ProductoPedido productoPedido = ProductoPedido.builder()
-                                .totalCompraProductoPedido(p.getCantidad().multiply(p.getCantidad()))
-                                .totalCantidadProductoPedido(p.getCantidad())
-                                .producto(
-                                        Producto.builder()
-                                                .idProducto(p.getId())
-                                                .build()
-                                )
-                                .pedido(
-                                        Pedido.builder()
-                                                .idPedido(pedido.getIdPedido())
-                                                .build()
-                                )
-                                .build();
-                        productoPedidoRepository.save(productoPedido);
-                    }
+            request.getProductos().parallelStream().forEach(p -> productoPedidoRepository.save(
+                            ProductoPedido.builder()
+                                    .totalCompraProductoPedido(p.getCantidad().multiply(p.getPrecio()))
+                                    .totalCantidadProductoPedido(p.getCantidad())
+                                    .producto(
+                                            Producto.builder()
+                                                    .idProducto(p.getId())
+                                                    .build()
+                                    )
+                                    .pedido(
+                                            Pedido.builder()
+                                                    .idPedido(pedido.getIdPedido())
+                                                    .build()
+                                    )
+                                    .build()
+                    )
             );
 
             return true;

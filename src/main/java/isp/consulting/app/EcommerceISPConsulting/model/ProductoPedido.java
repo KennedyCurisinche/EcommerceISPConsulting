@@ -1,7 +1,10 @@
 package isp.consulting.app.EcommerceISPConsulting.model;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,12 +32,18 @@ public class ProductoPedido {
     private BigDecimal totalCompraProductoPedido;
     private BigDecimal totalCantidadProductoPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_producto",
+            nullable = false
+    )
     private Producto producto;
 
-    @ManyToOne
-    @JoinColumn(name = "id_pedido")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_pedido",
+            nullable = false
+    )
     private Pedido pedido;
 
 }

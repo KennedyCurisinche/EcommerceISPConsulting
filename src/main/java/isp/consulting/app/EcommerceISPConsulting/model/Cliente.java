@@ -3,6 +3,7 @@ package isp.consulting.app.EcommerceISPConsulting.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +17,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -34,8 +34,11 @@ public class Cliente implements Serializable {
     private Long idCliente;
     private String nombreCliente;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
-    @JoinColumn(name = "id_direccion")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "id_direccion",
+            nullable = false
+    )
     private Direccion direccion;
 
 }
