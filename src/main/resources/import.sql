@@ -1,0 +1,3 @@
+INSERT INTO producto(nombre_producto, precio_producto) VALUES ('KR NARANJA 325ML', 1), ('GUARANA 500ML', 2.2), ('PILSEN CALLAO 635ML', 7.99), ('CORONA SIX1X6 365ML', 30), ('CUATES 8GR', 1), ('DORITOS 32GR', 2.2);
+INSERT INTO direccion(completa_direccion) VALUES('av los campos lt5 mz 2 ate'), ('av marin lt1 mz9 asoc guerreros lima'), ('jr alamos calle 2 lurigancho');
+INSERT INTO cliente(nombre_cliente, id_direccion) VALUES('carlos', 1), ('marcos', 2), ('juan', 3);

@@ -23,9 +23,9 @@ public class ProductoController {
 
         Boolean respuesta = productoService.save(producto);
         if (respuesta) {
-            return new ResponseEntity<>(new MensajeResponse(true, "Producto realizado"), HttpStatus.OK);
+            return new ResponseEntity<>(new MensajeResponse(true, "Producto creado"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new MensajeResponse(true, "No se pudo realizar producto"), HttpStatus.OK);
+            return new ResponseEntity<>(new MensajeResponse(true, "No se pudo crear producto"), HttpStatus.OK);
         }
 
     }

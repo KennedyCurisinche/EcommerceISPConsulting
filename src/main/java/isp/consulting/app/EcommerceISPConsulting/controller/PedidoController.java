@@ -23,9 +23,9 @@ public class PedidoController {
 
         Boolean respuesta = pedidoService.save(request);
         if (respuesta) {
-            return new ResponseEntity<MensajeResponse>(new MensajeResponse(true, "Pedido realizado"), HttpStatus.OK);
+            return new ResponseEntity<>(new MensajeResponse(true, "Pedido realizado"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<MensajeResponse>(new MensajeResponse(true, "No se pudo realizar pedido"), HttpStatus.OK);
+            return new ResponseEntity<>(new MensajeResponse(true, "No se pudo realizar pedido"), HttpStatus.OK);
         }
 
     }

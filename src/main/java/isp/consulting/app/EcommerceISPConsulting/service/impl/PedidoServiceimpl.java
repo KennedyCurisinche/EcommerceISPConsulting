@@ -13,6 +13,8 @@ import isp.consulting.app.EcommerceISPConsulting.util.ClockPE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 public class PedidoServiceimpl implements PedidoService {
 
@@ -40,7 +42,29 @@ public class PedidoServiceimpl implements PedidoService {
                             .build()
             );
 
-            request.getProductos().parallelStream().forEach(p -> productoPedidoRepository.save(
+            //PRIMEA FORMA DE INSERTAR
+
+            productoPedidoRepository.saveAll(request.getProductos().parallelStream()
+                    .map(p -> ProductoPedido.builder()
+                            .totalCompraProductoPedido(p.getCantidad().multiply(p.getPrecio()))
+                            .totalCantidadProductoPedido(p.getCantidad())
+                            .producto(
+                                    Producto.builder()
+                                            .idProducto(p.getId())
+                                            .build()
+                            )
+                            .pedido(
+                                    Pedido.builder()
+                                            .idPedido(pedido.getIdPedido())
+                                            .build()
+                            )
+                            .build()
+                    ).collect(Collectors.toList())
+            );
+
+            //SEGUNDA FORMA DE INSERTAR
+
+            /*request.getProductos().parallelStream().forEach(p -> productoPedidoRepository.save(
                             ProductoPedido.builder()
                                     .totalCompraProductoPedido(p.getCantidad().multiply(p.getPrecio()))
                                     .totalCantidadProductoPedido(p.getCantidad())
@@ -56,7 +80,7 @@ public class PedidoServiceimpl implements PedidoService {
                                     )
                                     .build()
                     )
-            );
+            );*/
 
             return true;
 
